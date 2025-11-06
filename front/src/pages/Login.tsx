@@ -14,12 +14,13 @@ const Login = () => {
   const { toast } = useToast();
   
   const [loginData, setLoginData] = useState({ usernameOrEmail: '', password: '' });
-  const [registerData, setRegisterData] = useState({ 
-    username: '', 
-    email: '', 
-    password: '', 
+  const [registerData, setRegisterData] = useState({
+    username: '',
+    email: '',
+    password: '',
     confirmPassword: '',
-    cpf: '' 
+    telefone: '',
+    cpf: ''
   });
 
   const handleLogin = (e: React.FormEvent) => {
@@ -57,6 +58,7 @@ const Login = () => {
       registerData.username,
       registerData.email,
       registerData.password,
+      registerData.telefone || undefined,
       registerData.cpf || undefined
     );
 
@@ -67,7 +69,7 @@ const Login = () => {
           ? "Você receberá 10% de desconto em suas compras!"
           : "Faça login para continuar.",
       });
-      setRegisterData({ username: '', email: '', password: '', confirmPassword: '', cpf: '' });
+      setRegisterData({ username: '', email: '', password: '', confirmPassword: '', telefone: '', cpf: '' });
     } else {
       toast({
         variant: "destructive",
@@ -163,6 +165,17 @@ const Login = () => {
                       type="email"
                       value={registerData.email}
                       onChange={(e) => setRegisterData({ ...registerData, email: e.target.value })}
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="register-telefone">Telefone</Label>
+                    <Input
+                      id="register-telefone"
+                      type="tel"
+                      placeholder="(00) 00000-0000"
+                      value={registerData.telefone}
+                      onChange={(e) => setRegisterData({ ...registerData, telefone: e.target.value })}
                       required
                     />
                   </div>

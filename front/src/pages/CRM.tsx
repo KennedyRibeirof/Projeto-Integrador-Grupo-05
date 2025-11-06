@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { getCurrentUser } from '@/lib/auth';
 import { pedidosApi, ApiPedido } from '@/lib/api';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, ShoppingBag, Calendar, Clock, MapPin, CreditCard, DollarSign, Package, TrendingUp, Search } from 'lucide-react';
+import { Loader2, ShoppingBag, Calendar, Clock, MapPin, CreditCard, DollarSign, Package, TrendingUp, Search, Phone, Mail } from 'lucide-react';
 
 const CRM = () => {
   const navigate = useNavigate();
@@ -69,8 +69,39 @@ const CRM = () => {
   };
 
   const getClienteName = (email: string) => {
-    // Extrai o nome do email (parte antes do @)
+    // Busca o usuário no localStorage para obter o nome completo
+    const usersStr = localStorage.getItem('maniacookies_users');
+    if (usersStr) {
+      const users = JSON.parse(usersStr);
+      const user = users.find((u: any) => u.email === email);
+      if (user) {
+        return user.username;
+      }
+    }
+    // Fallback: Extrai o nome do email (parte antes do @)
     return email.split('@')[0].replace(/[._-]/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+  };
+
+  const getClienteInfo = (email: string) => {
+    // Busca o usuário completo no localStorage
+    const usersStr = localStorage.getItem('maniacookies_users');
+    if (usersStr) {
+      const users = JSON.parse(usersStr);
+      const user = users.find((u: any) => u.email === email);
+      if (user) {
+        return {
+          name: user.username,
+          email: user.email,
+          telefone: user.telefone || 'Não informado'
+        };
+      }
+    }
+    // Fallback
+    return {
+      name: email.split('@')[0].replace(/[._-]/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+      email: email,
+      telefone: 'Não informado'
+    };
   };
 
   // Filtrar pedidos por nome do cliente
@@ -198,16 +229,26 @@ const CRM = () => {
                   <Card key={order.id}>
                     <CardHeader>
                       <div className="flex justify-between items-start">
-                        <div>
-                          <CardTitle className="text-xl">
+                        <div className="flex-1">
+                          <CardTitle className="text-xl mb-2">
                             Pedido #{order.id.slice(0, 8)}
                           </CardTitle>
-                          <p className="text-sm font-medium text-primary mt-1">
-                            Cliente: {getClienteName(order.clienteEmail)}
-                          </p>
-                          <p className="text-sm text-muted-foreground">
-                            Realizado em {formatDate(order.dataPedido)}
-                          </p>
+                          <div className="space-y-1">
+                            <p className="text-sm font-medium text-primary">
+                              Cliente: {getClienteInfo(order.clienteEmail).name}
+                            </p>
+                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                              <Mail className="h-4 w-4" />
+                              <span>{getClienteInfo(order.clienteEmail).email}</span>
+                            </div>
+                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                              <Phone className="h-4 w-4" />
+                              <span>{getClienteInfo(order.clienteEmail).telefone}</span>
+                            </div>
+                            <p className="text-sm text-muted-foreground mt-2">
+                              Realizado em {formatDate(order.dataPedido)}
+                            </p>
+                          </div>
                         </div>
                         <Badge variant="secondary" className="bg-green-100 text-green-800">
                           Confirmado

@@ -25,7 +25,7 @@ export function ClienteController() {
     });
     
     app.get("/cliente/search", (req, res) => {
-        const { nome, email, senha } = req.query;
+        const { nome, email, senha, telefone } = req.query;
 
         if (nome) {
             const cliente = service.getClienteByNome(nome as string);
@@ -35,6 +35,12 @@ export function ClienteController() {
         }
         if(email) {
             const cliente = service.getClienteByEmail(email as string);
+            if (cliente) {
+                return res.status(200).json(cliente);
+            }
+        }
+        if(telefone) {
+            const cliente = service.getClienteByTelefone(telefone as string);
             if (cliente) {
                 return res.status(200).json(cliente);
             }

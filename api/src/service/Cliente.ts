@@ -11,11 +11,13 @@ export class ClienteService {
         nome: string;
         email: string;
         senha: string;
+        telefone: string;
     }): cadastro {
         const clienteCreated = cadastro.create(
             cliente.nome,
             cliente.email,
-            cliente.senha
+            cliente.senha,
+            cliente.telefone
         );
         this.lista.push(clienteCreated);
         return clienteCreated;
@@ -35,5 +37,9 @@ export class ClienteService {
 
     getClienteBySenha(senha: string): cadastro | undefined {
         return this.lista.find((cliente) => cliente.getSenha() === senha);
+    }
+
+    getClienteByTelefone(telefone: string): cadastro | undefined {
+        return this.lista.find((cliente) => cliente.getTelefone() === telefone);
     }
 }

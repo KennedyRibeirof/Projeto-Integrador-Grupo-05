@@ -3,9 +3,9 @@ import { User } from '@/types';
 const USERS_KEY = 'maniacookies_users';
 const CURRENT_USER_KEY = 'maniacookies_current_user';
 
-export const register = (username: string, email: string, password: string, cpf?: string): boolean => {
+export const register = (username: string, email: string, password: string, telefone?: string, cpf?: string): boolean => {
   const users = getUsers();
-  
+
   if (users.find(u => u.email === email || u.username === username)) {
     return false;
   }
@@ -14,6 +14,7 @@ export const register = (username: string, email: string, password: string, cpf?
     id: Date.now().toString(),
     username,
     email,
+    telefone,
     cpf,
     password,
   };
