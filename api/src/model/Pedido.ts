@@ -1,3 +1,5 @@
+import { randomUUID } from "node:crypto";
+
 export interface ItemPedido {
     cookieId: string;
     sabor: string;
@@ -41,7 +43,7 @@ export class Pedido {
         desconto: number,
         total: number
     ) {
-        const id = crypto.randomUUID();
+        const id = randomUUID();
         const dataPedido = new Date();
         return new Pedido(
             id,

@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3000';
+const API_URL = 'https://grupo05projeto20252.escolatecnicaadelia.info/api';
 
 export interface ApiCookie {
   id: string;
@@ -94,6 +94,60 @@ export const pedidosApi = {
     if (!response.ok) {
       const error = await response.json();
       throw new Error(error.message || 'Erro ao criar pedido');
+    }
+    return response.json();
+  },
+};
+
+// Auth API
+export interface ApiUser {
+  id: string;
+  username: string;
+  email: string;
+  telefone?: string;
+  cpf?: string;
+}
+
+export interface LoginData {
+  usernameOrEmail: string;
+  password: string;
+}
+
+export interface RegisterData {
+  username: string;
+  email: string;
+  password: string;
+  telefone: string;
+  cpf?: string;
+}
+
+export const authApi = {
+  login: async (data: LoginData): Promise<ApiUser> => {
+    const response = await fetch(`${API_URL}/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Erro ao fazer login');
+    }
+    return response.json();
+  },
+
+  register: async (data: RegisterData): Promise<ApiUser> => {
+    const response = await fetch(`${API_URL}/register`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Erro ao criar cadastro');
     }
     return response.json();
   },

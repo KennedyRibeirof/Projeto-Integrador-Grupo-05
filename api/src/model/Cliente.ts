@@ -1,3 +1,5 @@
+import { randomUUID } from "node:crypto";
+
 export class cadastro {
     constructor(
         private nome: string,
@@ -16,7 +18,7 @@ export class cadastro {
     }
 
     static create(nome: string, email: string, senha: string, telefone: string) {
-        const id = crypto.randomUUID();
+        const id = randomUUID();
         return new cadastro(nome, email, senha, telefone);
     }
 

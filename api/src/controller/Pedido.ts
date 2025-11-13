@@ -7,7 +7,7 @@ export function PedidoController() {
     const service = new PedidoService(list);
 
     // Criar um novo pedido
-    app.post("/pedidos", (req, res) => {
+    app.post("/api/pedidos", (req, res) => {
         try {
             const pedidoData = req.body;
             const newPedido = service.createPedido(pedidoData);
@@ -21,20 +21,20 @@ export function PedidoController() {
     });
 
     // Listar todos os pedidos
-    app.get("/pedidos", (req, res) => {
+    app.get("/api/pedidos", (req, res) => {
         const pedidos = service.getPedidos();
         res.json(pedidos.map(p => p.toJSON()));
     });
 
     // Buscar pedidos por email do cliente
-    app.get("/pedidos/cliente/:email", (req, res) => {
+    app.get("/api/pedidos/cliente/:email", (req, res) => {
         const { email } = req.params;
         const pedidos = service.getPedidosByClienteEmail(email);
         res.json(pedidos.map(p => p.toJSON()));
     });
 
     // Buscar pedido por ID
-    app.get("/pedidos/:id", (req, res) => {
+    app.get("/api/pedidos/:id", (req, res) => {
         const { id } = req.params;
         const pedido = service.getPedidoById(id);
 

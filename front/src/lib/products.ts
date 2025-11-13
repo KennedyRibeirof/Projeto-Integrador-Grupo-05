@@ -14,7 +14,7 @@ export const products: Product[] = [
     dough: 'chocolate',
     filling: 'nutella',
     description: 'Delicioso cookie de massa de chocolate recheado com cremoso Nutella',
-    price: 3.00,
+    price: 2.00,
     image: cookieNutella,
   },
   {
@@ -23,7 +23,7 @@ export const products: Product[] = [
     dough: 'red-velvet',
     filling: 'ninho',
     description: 'Cookie de massa red velvet com recheio de leite Ninho',
-    price: 3.00,
+    price: 2.00,
     image: cookieRedVelvet,
   },
   {
@@ -32,7 +32,7 @@ export const products: Product[] = [
     dough: 'baunilha',
     filling: 'tradicional',
     description: 'Cookie tradicional de massa de baunilha',
-    price: 3.00,
+    price: 2.00,
     image: cookieBaunilha,
   },
 ];

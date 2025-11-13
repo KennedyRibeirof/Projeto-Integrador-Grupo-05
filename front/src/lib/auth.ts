@@ -1,42 +1,55 @@
 import { User } from '@/types';
+import { authApi } from './api';
 
-const USERS_KEY = 'maniacookies_users';
 const CURRENT_USER_KEY = 'maniacookies_current_user';
 
-export const register = (username: string, email: string, password: string, telefone?: string, cpf?: string): boolean => {
-  const users = getUsers();
+export const register = async (username: string, email: string, password: string, telefone?: string, cpf?: string): Promise<boolean> => {
+  try {
+    const user = await authApi.register({
+      username,
+      email,
+      password,
+      telefone: telefone || '',
+      cpf,
+    });
 
-  if (users.find(u => u.email === email || u.username === username)) {
+    // Salvar o usuário no localStorage após o registro bem-sucedido
+    const userToSave: User = {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      telefone: user.telefone,
+      cpf: user.cpf,
+    };
+    localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(userToSave));
+    return true;
+  } catch (error) {
+    console.error('Erro ao registrar:', error);
     return false;
   }
-
-  const newUser: User & { password: string } = {
-    id: Date.now().toString(),
-    username,
-    email,
-    telefone,
-    cpf,
-    password,
-  };
-
-  users.push(newUser);
-  localStorage.setItem(USERS_KEY, JSON.stringify(users));
-  return true;
 };
 
-export const login = (usernameOrEmail: string, password: string): User | null => {
-  const users = getUsers();
-  const user = users.find(
-    u => (u.email === usernameOrEmail || u.username === usernameOrEmail) && u.password === password
-  );
+export const login = async (usernameOrEmail: string, password: string): Promise<User | null> => {
+  try {
+    const user = await authApi.login({
+      usernameOrEmail,
+      password,
+    });
 
-  if (user) {
-    const { password: _, ...userWithoutPassword } = user;
-    localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(userWithoutPassword));
-    return userWithoutPassword;
+    const userToSave: User = {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      telefone: user.telefone,
+      cpf: user.cpf,
+    };
+
+    localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(userToSave));
+    return userToSave;
+  } catch (error) {
+    console.error('Erro ao fazer login:', error);
+    return null;
   }
-
-  return null;
 };
 
 export const logout = (): void => {
@@ -55,9 +68,4 @@ export const hasCPFDiscount = (): boolean => {
 
 export const calculateDiscount = (total: number): number => {
   return hasCPFDiscount() ? total * 0.1 : 0; // 10% discount with CPF
-};
-
-const getUsers = (): (User & { password: string })[] => {
-  const usersStr = localStorage.getItem(USERS_KEY);
-  return usersStr ? JSON.parse(usersStr) : [];
 };

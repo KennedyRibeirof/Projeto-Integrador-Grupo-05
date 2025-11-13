@@ -42,4 +42,11 @@ export class ClienteService {
     getClienteByTelefone(telefone: string): cadastro | undefined {
         return this.lista.find((cliente) => cliente.getTelefone() === telefone);
     }
+
+    login(usernameOrEmail: string, password: string): cadastro | null {
+        const cliente = this.lista.find(
+            (c) => (c.getEmail() === usernameOrEmail || c.getNome() === usernameOrEmail) && c.getSenha() === password
+        );
+        return cliente || null;
+    }
 }

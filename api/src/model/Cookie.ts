@@ -1,3 +1,5 @@
+import { randomUUID } from "node:crypto";
+
 export class Cookies {
     constructor(
         private id: string,
@@ -11,7 +13,7 @@ export class Cookies {
     }
 
     static create(sabor: string, recheio: string, preco: number) {
-        const id = crypto.randomUUID();
+        const id = randomUUID();
         return new Cookies(id, sabor, recheio, preco);
     }
 

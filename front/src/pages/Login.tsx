@@ -23,10 +23,10 @@ const Login = () => {
     cpf: ''
   });
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    const user = login(loginData.usernameOrEmail, loginData.password);
-    
+    const user = await login(loginData.usernameOrEmail, loginData.password);
+
     if (user) {
       toast({
         title: "Login realizado com sucesso!",
@@ -42,9 +42,9 @@ const Login = () => {
     }
   };
 
-  const handleRegister = (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (registerData.password !== registerData.confirmPassword) {
       toast({
         variant: "destructive",
@@ -54,7 +54,7 @@ const Login = () => {
       return;
     }
 
-    const success = register(
+    const success = await register(
       registerData.username,
       registerData.email,
       registerData.password,
@@ -65,7 +65,7 @@ const Login = () => {
     if (success) {
       toast({
         title: "Cadastro realizado!",
-        description: registerData.cpf 
+        description: registerData.cpf
           ? "Você receberá 10% de desconto em suas compras!"
           : "Faça login para continuar.",
       });
