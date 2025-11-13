@@ -1,4 +1,5 @@
-const API_URL = 'https://grupo05projeto20252.escolatecnicaadelia.info/api';
+// Use variável de ambiente se disponível, senão usa localhost para desenvolvimento
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3005/api';
 
 export interface ApiCookie {
   id: string;
